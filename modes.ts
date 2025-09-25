@@ -134,4 +134,16 @@ ${input}. استدعِ set_timecodes_with_numeric_values مرة واحدة مع 
     },
     isList: true,
   },
+  
+  burn_text: {
+    emoji: '✍️',
+    name: {
+      en: 'Add Text',
+      ar: 'إضافة نص',
+    },
+    prompt: {
+      en: () => '',
+      ar: () => '',
+    },
+  },
 };

@@ -36,6 +36,9 @@ export default function VideoPlayer({
   uploadCount,
   uploadLimit,
   translations,
+  onLoadFromUrl,
+  videoUrlInput,
+  setVideoUrlInput,
 }) {
   const [video, setVideo] = useState<HTMLVideoElement | null>(null);
   const [duration, setDuration] = useState(0);
@@ -277,20 +280,38 @@ export default function VideoPlayer({
         </>
       ) : (
         <div className="emptyVideo">
-          <p>
-            {isLoadingVideo
-              ? translations.processingVideo
-              : videoError
-                ? translations.errorProcessingVideo
-                : translations.dragAndDrop}
-          </p>
-          {!isLoadingVideo && !videoError && uploadCount < uploadLimit && (
-            <p className="upload-counter">
-              {translations.analysesLeft.replace(
-                '{count}',
-                uploadLimit - uploadCount,
+          {isLoadingVideo ? (
+            <p>{translations.processingVideo}</p>
+          ) : videoError ? (
+            <p>{translations.errorProcessingVideo}</p>
+          ) : (
+            <>
+              <p>{translations.dragAndDrop}</p>
+              <div className="divider">OR</div>
+              <div className="url-loader">
+                <input
+                  type="text"
+                  placeholder={translations.enterVideoUrl}
+                  value={videoUrlInput}
+                  onChange={(e) => setVideoUrlInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      onLoadFromUrl();
+                    }
+                  }}
+                />
+                <button onClick={onLoadFromUrl}>{translations.loadFromUrl}</button>
+              </div>
+              <p className="url-helper-text">{translations.urlHelperText}</p>
+              {uploadCount < uploadLimit && (
+                <p className="upload-counter">
+                  {translations.analysesLeft.replace(
+                    '{count}',
+                    uploadLimit - uploadCount,
+                  )}
+                </p>
               )}
-            </p>
+            </>
           )}
         </div>
       )}
